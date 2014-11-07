@@ -8,10 +8,10 @@ use Getopt::Long;
 use Fcntl;
 $| = 1;
 
-my $VERSION = '0.1.8';
+my $VERSION = '0.1.9';
 
 # get opts
-my ($ip, $help);
+my ($ip, $natip, $help);
 GetOptions ("help" => \$help);
 print "usage: " . "perl vm_setup.pl \n\n" if ($help);
 exit if ($help);
@@ -47,6 +47,7 @@ close ($etc_resolv_conf);
 print "running build_cpnat";
 system_formatted ("/scripts/build_cpnat");
 chomp ( $ip = qx(cat /var/cpanel/cpnat | awk '{print\$2}') );
+chomp ( $natip = qx(cat /var/cpanel/cpnat | awk '{print\$1}') );
 
 # create .whostmgrft
 print "creating /etc/.whostmgrft\n";
@@ -60,7 +61,7 @@ unlink '/etc/wwwacct.conf';
 sysopen (my $etc_wwwacct_conf, '/etc/wwwacct.conf', O_WRONLY|O_CREAT) or
     print_formatted ("$!") and exit;
     print $etc_wwwacct_conf "HOST daily.cpanel.vm\n" .
-                            "ADDR $ip\n" .
+                            "ADDR $natip\n" .
                             "HOMEDIR /home\n" .
                             "ETHDEV eth0\n" .
                             "NS ns1.os.cpanel.vm\n" .
