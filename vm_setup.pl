@@ -8,12 +8,13 @@ use Getopt::Long;
 use Fcntl;
 $| = 1;
 
-my $VERSION = '0.1.7';
+my $VERSION = '0.1.8';
 
 # get opts
 my ($ip, $help);
-GetOptions ("ip=s" => \$ip);
-print "usage:\n" . "perl vm_setup.pl -i 10.6.6.164\n\n" unless ($ip);
+GetOptions ("help" => \$help);
+print "usage: " . "perl vm_setup.pl \n\n" if ($help);
+exit if ($help);
 
 
 ### and go
@@ -41,6 +42,11 @@ sysopen (my $etc_resolv_conf, '/etc/resolv.conf', O_WRONLY|O_CREAT) or
     print_formatted ("$!") and exit;
     print $etc_resolv_conf "nameserver 10.6.1.1\n" . "nameserver 8.8.8.8\n";
 close ($etc_resolv_conf);
+
+# run /scripts/build_cpnat
+print "running build_cpnat";
+system_formatted ("/scripts/build_cpnat");
+chomp ( $ip = qx(cat /var/cpanel/cpnat | awk '{print\$2}') );
 
 # create .whostmgrft
 print "creating /etc/.whostmgrft\n";
@@ -127,7 +133,8 @@ if ($answer eq "y") {
 
 # exit cleanly
 print "setup complete\n\n";
-
+print "https://$ip:2087/login/?user=root&pass=cpanel1\n";
+print "https://$ip:2083/login/?user=root&pass=cpanel1\n\n";
 
 ### subs
 sub print_formatted {
