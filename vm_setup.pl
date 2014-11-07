@@ -133,8 +133,8 @@ if ($answer eq "y") {
 
 # exit cleanly
 print "setup complete\n\n";
-print "http://$ip:2086/login/?user=root&pass=cpanel1\n";
-print "http://$ip:2082/login/?user=root&pass=cpanel1\n\n";
+print "https://$ip:2087/login/?user=root&pass=cpanel1\n";
+print "https://$ip:2083/login/?user=root&pass=cpanel1\n\n";
 
 ### subs
 sub print_formatted {
