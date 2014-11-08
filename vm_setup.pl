@@ -8,7 +8,7 @@ use Getopt::Long;
 use Fcntl;
 $| = 1;
 
-my $VERSION = '0.1.9';
+my $VERSION = '0.1.10';
 
 # get opts
 my ($ip, $natip, $help);
@@ -19,7 +19,7 @@ exit if ($help);
 
 ### and go
 # print header
-print "server setup script\n" .
+print "vm setup script\n" .
       "version $VERSION\n" .
       "\n";
 
@@ -31,7 +31,7 @@ system_formatted ("yum install mtr nmap telnet bind-utils jwhois dev git -y");
 print "setting hostname\n";
 system_formatted ("hostname daily.cpanel.vm");
 sysopen (my $etc_hostname, '/etc/hostname', O_WRONLY|O_CREAT) or
-    print_formatted ("$!") and exit;
+    die print_formatted ("$!");
     print $etc_hostname "daily.cpanel.vm";
 close ($etc_hostname);
 
@@ -39,12 +39,12 @@ close ($etc_hostname);
 print "adding resolvers\n";
 unlink '/etc/resolv.conf';
 sysopen (my $etc_resolv_conf, '/etc/resolv.conf', O_WRONLY|O_CREAT) or
-    print_formatted ("$!") and exit;
+    die print_formatted ("$!");
     print $etc_resolv_conf "nameserver 10.6.1.1\n" . "nameserver 8.8.8.8\n";
 close ($etc_resolv_conf);
 
 # run /scripts/build_cpnat
-print "running build_cpnat";
+print "running build_cpnat\n";
 system_formatted ("/scripts/build_cpnat");
 chomp ( $ip = qx(cat /var/cpanel/cpnat | awk '{print\$2}') );
 chomp ( $natip = qx(cat /var/cpanel/cpnat | awk '{print\$1}') );
@@ -52,14 +52,14 @@ chomp ( $natip = qx(cat /var/cpanel/cpnat | awk '{print\$1}') );
 # create .whostmgrft
 print "creating /etc/.whostmgrft\n";
 sysopen (my $etc_whostmgrft, '/etc/.whostmgrft', O_WRONLY|O_CREAT) or
-    print_formatted ("$!") and exit;
+    die print_formatted ("$!");
 close ($etc_whostmgrft);
 
 # correct wwwacct.conf
 print "correcting /etc/wwwacct.conf\n";
 unlink '/etc/wwwacct.conf';
 sysopen (my $etc_wwwacct_conf, '/etc/wwwacct.conf', O_WRONLY|O_CREAT) or
-    print_formatted ("$!") and exit;
+    die print_formatted ("$!");
     print $etc_wwwacct_conf "HOST daily.cpanel.vm\n" .
                             "ADDR $natip\n" .
                             "HOMEDIR /home\n" .
@@ -85,7 +85,7 @@ close ($etc_wwwacct_conf);
 print "correcting /etc/hosts\n";
 unlink '/etc/hosts';
 sysopen (my $etc_hosts, '/etc/hosts', O_WRONLY|O_CREAT) or
-    print_formatted ("$!") and exit;
+    die print_formatted ("$!");
     print $etc_hosts "127.0.0.1		localhost localhost.localdomain localhost4 localhost4.localdomain4\n" .
                      "::1		localhost localhost.localdomain localhost6 localhost6.localdomain6\n" .
                      "$ip		daily daily.cpanel.vm\n";
@@ -122,7 +122,7 @@ if ($answer eq "y") {
 }
 
 # running another check_cpanel_rpms
-print "running check_cpanel_rpms";
+print "running check_cpanel_rpms\n";
 system_formatted ('/scripts/check_cpanel_rpms --fix');
 
 # install Task::Cpanel::Core
