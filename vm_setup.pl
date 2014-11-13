@@ -8,7 +8,7 @@ use Getopt::Long;
 use Fcntl;
 $| = 1;
 
-my $VERSION = '0.1.10';
+my $VERSION = '0.2.0';
 
 # get opts
 my ($ip, $natip, $help, $fast, $full, $answer);
