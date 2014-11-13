@@ -18,26 +18,46 @@ GetOptions (
     "fast" => \$fast,
 );
 
+# print header
+print "\nVM Server Setup Script\n" .
+      "Version: $VERSION\n" .
+      "\n";
+if ($help) {
+    print "Usage: perl vm_setup.pl [options]\n\n";
+    print "Description: Performs a number of functions to prepare meteorologist VMs for immediate use. \n\n";
+    print "Options: \n";
+    print "-------------- \n";
+    print "--fast: Skips all optional setup functions\n";
+    print "--full: Passes yes to all optional setup functions \n\n";
+    print "Full list of things this does: \n";
+    print "-------------- \n";
+    print "- Installs common packages\n";
+    print "- Sets hostname\n";
+    print "- Sets resolvers\n";
+    print "- Builds /var/cpanel/cpnat\n";
+    print "- Performs basic setup wizard\n";
+    print "- Fixes /etc/host\n";
+    print "- Fixes screen permissions\n";
+    print "- Runs cpkeyclt\n";
+    print "- Creates a test accounts\n";
+    print "- Runs upcp (optional)\n";
+    print "- Runs check_cpanel_rpms --fix (optional)\n";
+    print "- Installs Task::Cpanel::Core (optional)\n\n";
+    exit;
+}
+
+
+### and go
 if($full)
 {
-    print "--full passed. Passing y to all optional setup options.\n";
+    print "--full passed. Passing y to all optional setup options.\n\n";
     chomp ($answer="y");
 }
 if($fast)
 {
-    print "--fast passed. Skipping all optional setup options.\n";
+    print "--fast passed. Skipping all optional setup options.\n\n";
     chomp ($answer="n");
 }
-
-print "usage: " . "perl vm_setup.pl \n\n" if ($help);
-exit if ($help);
-
-
-### and go
-# print header
-print "vm setup script\n" .
-      "version $VERSION\n" .
-      "\n";
 
 # check for and install prereqs
 print "installing utilities via yum [mtr nmap telnet bind-utils jwhois dev git]\n";
