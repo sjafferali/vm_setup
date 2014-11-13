@@ -18,12 +18,12 @@ GetOptions (
     "fast" => \$fast,
 );
 
-if(!$full)
+if($full)
 {
     print "--full passed. Passing y to all optional setup options.\n";
     chomp ($answer="y");
 }
-if(!$fast)
+if($fast)
 {
     print "--fast passed. Skipping all optional setup options.\n";
     chomp ($answer="n");
