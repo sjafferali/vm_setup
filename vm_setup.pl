@@ -8,20 +8,56 @@ use Getopt::Long;
 use Fcntl;
 $| = 1;
 
-my $VERSION = '0.1.10';
+my $VERSION = '0.2.0';
 
 # get opts
-my ($ip, $natip, $help);
-GetOptions ("help" => \$help);
-print "usage: " . "perl vm_setup.pl \n\n" if ($help);
-exit if ($help);
+my ($ip, $natip, $help, $fast, $full, $answer);
+GetOptions (
+    "help" => \$help,
+    "full" => \$full,
+    "fast" => \$fast,
+);
+
+# print header
+print "\nVM Server Setup Script\n" .
+      "Version: $VERSION\n" .
+      "\n";
+if ($help) {
+    print "Usage: perl vm_setup.pl [options]\n\n";
+    print "Description: Performs a number of functions to prepare meteorologist VMs for immediate use. \n\n";
+    print "Options: \n";
+    print "-------------- \n";
+    print "--fast: Skips all optional setup functions\n";
+    print "--full: Passes yes to all optional setup functions \n\n";
+    print "Full list of things this does: \n";
+    print "-------------- \n";
+    print "- Installs common packages\n";
+    print "- Sets hostname\n";
+    print "- Sets resolvers\n";
+    print "- Builds /var/cpanel/cpnat\n";
+    print "- Performs basic setup wizard\n";
+    print "- Fixes /etc/host\n";
+    print "- Fixes screen permissions\n";
+    print "- Runs cpkeyclt\n";
+    print "- Creates a test accounts\n";
+    print "- Runs upcp (optional)\n";
+    print "- Runs check_cpanel_rpms --fix (optional)\n";
+    print "- Installs Task::Cpanel::Core (optional)\n\n";
+    exit;
+}
 
 
 ### and go
-# print header
-print "vm setup script\n" .
-      "version $VERSION\n" .
-      "\n";
+if($full)
+{
+    print "--full passed. Passing y to all optional setup options.\n\n";
+    chomp ($answer="y");
+}
+if($fast)
+{
+    print "--fast passed. Skipping all optional setup options.\n\n";
+    chomp ($answer="n");
+}
 
 # check for and install prereqs
 print "installing utilities via yum [mtr nmap telnet bind-utils jwhois dev git]\n";
@@ -97,7 +133,7 @@ system_formatted ('/usr/local/cpanel/cpkeyclt');
 
 # fix screen perms
 print "fixing screen perms\n";
-system_formatted ('chmod 777 /var/run/screen');
+system_formatted ('rpm --setperms screen');
 
 # create test account
 print "creating test account - cptest\n";
@@ -116,19 +152,31 @@ system_formatted ("/usr/local/cpanel/bin/dbmaptool cptest --type mysql --dbusers
 
 # upcp
 print "would you like to run upcp now? [n] ";
-chomp (my $answer = <STDIN>);
+if (!$full && !$fast) { 
+    chomp ($answer = <STDIN>);
+}
 if ($answer eq "y") {
+    print "\nrunning upcp \n ";
     system_formatted ('/scripts/upcp');
 }
 
 # running another check_cpanel_rpms
-print "running check_cpanel_rpms\n";
-system_formatted ('/scripts/check_cpanel_rpms --fix');
+print "would you like to run check_cpanel_rpms now? [n] ";
+if (!$full && !$fast) { 
+    chomp ($answer = <STDIN>);
+}
+if ($answer eq "y") {
+    print "\nrunning check_cpanel_rpms \n ";
+    system_formatted ('/scripts/check_cpanel_rpms --fix');
+}
 
 # install Task::Cpanel::Core
 print "would you like to install Task::Cpanel::Core? [n] ";
-chomp ($answer = <STDIN>);
+if (!$full && !$fast) { 
+    chomp ($answer = <STDIN>);
+}
 if ($answer eq "y") {
+    print "\ninstalling Task::Cpanel::Core\n ";
     system_formatted ('/scripts/perlinstaller Task::Cpanel::Core');
 }
 
