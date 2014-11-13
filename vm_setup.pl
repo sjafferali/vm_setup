@@ -122,8 +122,11 @@ if ($answer eq "y") {
 }
 
 # running another check_cpanel_rpms
-print "running check_cpanel_rpms\n";
-system_formatted ('/scripts/check_cpanel_rpms --fix');
+print "would you like to run check_cpanel_rpms now? [n] ";
+chomp ($answer = <STDIN>);
+if ($answer eq "y") {
+    system_formatted ('/scripts/check_cpanel_rpms --fix');
+}
 
 # install Task::Cpanel::Core
 print "would you like to install Task::Cpanel::Core? [n] ";
