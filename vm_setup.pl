@@ -97,7 +97,7 @@ system_formatted ('/usr/local/cpanel/cpkeyclt');
 
 # fix screen perms
 print "fixing screen perms\n";
-system_formatted ('chmod 777 /var/run/screen');
+system_formatted ('rpm --setperms screen');
 
 # create test account
 print "creating test account - cptest\n";
