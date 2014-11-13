@@ -8,7 +8,7 @@ use Getopt::Long;
 use Fcntl;
 $| = 1;
 
-my $VERSION = '0.2.0';
+my $VERSION = '0.2.1';
 
 # get opts
 my ($ip, $natip, $help, $fast, $full, $answer);
@@ -39,7 +39,7 @@ if ($help) {
     print "- Fixes /etc/host\n";
     print "- Fixes screen permissions\n";
     print "- Runs cpkeyclt\n";
-    print "- Creates a test accounts\n";
+    print "- Creates test accounts\n";
     print "- Runs upcp (optional)\n";
     print "- Runs check_cpanel_rpms --fix (optional)\n";
     print "- Installs Task::Cpanel::Core (optional)\n\n";
