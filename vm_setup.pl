@@ -8,7 +8,7 @@ use Getopt::Long;
 use Fcntl;
 $| = 1;
 
-my $VERSION = '0.2.1';
+my $VERSION = '0.2.2';
 
 # get opts
 my ($ip, $natip, $help, $fast, $full, $answer);
@@ -183,7 +183,8 @@ if ($answer eq "y") {
 # exit cleanly
 print "setup complete\n\n";
 print "https://$ip:2087/login/?user=root&pass=cpanel1\n";
-print "https://$ip:2083/login/?user=root&pass=cpanel1\n\n";
+print "https://$ip:2096/login/?user=testing@cptest.tld&pass=cpanel1\n";
+print "https://$ip:2083/login/?user=cptest&pass=cpanel1\n\n";
 
 ### subs
 sub print_formatted {
