@@ -36,7 +36,7 @@ if ($help) {
     print "- Sets resolvers\n";
     print "- Builds /var/cpanel/cpnat\n";
     print "- Performs basic setup wizard\n";
-    print "- Fixes /etc/host\n";
+    print "- Fixes /etc/hosts\n";
     print "- Fixes screen permissions\n";
     print "- Runs cpkeyclt\n";
     print "- Creates test accounts\n";
