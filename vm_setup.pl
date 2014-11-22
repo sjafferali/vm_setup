@@ -8,7 +8,7 @@ use Getopt::Long;
 use Fcntl;
 $| = 1;
 
-my $VERSION = '0.2.4';
+my $VERSION = '0.2.5';
 
 # get opts
 my ($ip, $natip, $help, $fast, $full, $force, $answer);
@@ -28,7 +28,7 @@ if ($help) {
     print "Description: Performs a number of functions to prepare meteorologist VMs for immediate use. \n\n";
     print "Options: \n";
     print "-------------- \n";
-    print "--force: Ignores previous run check\n"
+    print "--force: Ignores previous run check\n";
     print "--fast: Skips all optional setup functions\n";
     print "--full: Passes yes to all optional setup functions \n\n";
     print "Full list of things this does: \n";
