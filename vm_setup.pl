@@ -8,7 +8,7 @@ use Getopt::Long;
 use Fcntl;
 $| = 1;
 
-my $VERSION = '0.2.6';
+my $VERSION = '0.2.7';
 
 # get opts
 my ($ip, $natip, $help, $fast, $full, $force, $answer);
@@ -210,6 +210,7 @@ close ($etc_motd);
 # exit cleanly
 print "setup complete\n\n";
 system_formatted ('cat /etc/motd');
+print "\n"; 
 
 ### subs
 sub print_formatted {
