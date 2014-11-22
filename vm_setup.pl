@@ -8,14 +8,15 @@ use Getopt::Long;
 use Fcntl;
 $| = 1;
 
-my $VERSION = '0.2.3';
+my $VERSION = '0.2.4';
 
 # get opts
-my ($ip, $natip, $help, $fast, $full, $answer);
+my ($ip, $natip, $help, $fast, $full, $force, $answer);
 GetOptions (
     "help" => \$help,
     "full" => \$full,
     "fast" => \$fast,
+    "force" => \$force,
 );
 
 # print header
@@ -27,6 +28,7 @@ if ($help) {
     print "Description: Performs a number of functions to prepare meteorologist VMs for immediate use. \n\n";
     print "Options: \n";
     print "-------------- \n";
+    print "--force: Ignores previous run check\n"
     print "--fast: Skips all optional setup functions\n";
     print "--full: Passes yes to all optional setup functions \n\n";
     print "Full list of things this does: \n";
@@ -48,6 +50,17 @@ if ($help) {
 
 
 ### and go
+if (-e "/root/vmsetup.lock")
+{
+    if (!$force)
+    {
+        print "/root/vmsetup.lock exists. This script may have already been run. Use --force to bypass. Exiting...\n"
+        exit;
+    } else
+    {
+        print "/root/vmsetup.lock exists. --force passed. Ignoring...\n";
+    }
+}
 if($full)
 {
     print "--full passed. Passing y to all optional setup options.\n\n";
@@ -58,6 +71,10 @@ if($fast)
     print "--fast passed. Skipping all optional setup options.\n\n";
     chomp ($answer="n");
 }
+
+# create lock file
+print "creating lock file\n"; 
+system_formatted ("touch /root/vmsetup.lock");
 
 # check for and install prereqs
 print "installing utilities via yum [mtr nmap telnet bind-utils jwhois dev git]\n";
