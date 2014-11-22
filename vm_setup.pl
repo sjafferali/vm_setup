@@ -54,7 +54,7 @@ if (-e "/root/vmsetup.lock")
 {
     if (!$force)
     {
-        print "/root/vmsetup.lock exists. This script may have already been run. Use --force to bypass. Exiting...\n"
+        print "/root/vmsetup.lock exists. This script may have already been run. Use --force to bypass. Exiting...\n";
         exit;
     } else
     {
