@@ -197,11 +197,19 @@ if ($answer eq "y") {
     system_formatted ('/scripts/perlinstaller Task::Cpanel::Core');
 }
 
+print "updating /etc/motd\n";
+unlink '/etc/motd';
+sysopen (my $etc_motd, '/etc/motd', O_WRONLY|O_CREAT) or
+    die print_formatted ("$!");
+    print $etc_motd "\nVM Setup Script created the following test accounts:\n" .
+                     "https://$ip:2087/login/?user=root&pass=cpanel1\n" .
+                     "https://$ip:2083/login/?user=cptest&pass=cpanel1\n" .
+                     "https://$ip:2096/login/?user=testing\@cptest.tld&pass=cpanel1\n\n"; 
+close ($etc_motd);
+
 # exit cleanly
 print "setup complete\n\n";
-print "https://$ip:2087/login/?user=root&pass=cpanel1\n";
-print "https://$ip:2096/login/?user=testing\@cptest.tld&pass=cpanel1\n";
-print "https://$ip:2083/login/?user=cptest&pass=cpanel1\n\n";
+system_formatted ('cat /etc/motd');
 
 ### subs
 sub print_formatted {
