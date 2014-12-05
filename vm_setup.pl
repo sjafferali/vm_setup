@@ -168,7 +168,7 @@ print "mapping cptest_testuser and cptest_testdb to cptest account\n";
 system_formatted ("/usr/local/cpanel/bin/dbmaptool cptest --type mysql --dbusers 'cptest_testuser' --dbs 'cptest_testdb'");
 
 # upcp
-print "would you like to run upcp now? [n] ";
+print "would you like to run upcp now? [n] \n";
 if (!$full && !$fast) { 
     chomp ($answer = <STDIN>);
 }
@@ -178,7 +178,7 @@ if ($answer eq "y") {
 }
 
 # running another check_cpanel_rpms
-print "would you like to run check_cpanel_rpms now? [n] ";
+print "would you like to run check_cpanel_rpms now? [n] \n";
 if (!$full && !$fast) { 
     chomp ($answer = <STDIN>);
 }
@@ -188,7 +188,7 @@ if ($answer eq "y") {
 }
 
 # install Task::Cpanel::Core
-print "would you like to install Task::Cpanel::Core? [n] ";
+print "would you like to install Task::Cpanel::Core? [n] \n";
 if (!$full && !$fast) { 
     chomp ($answer = <STDIN>);
 }
