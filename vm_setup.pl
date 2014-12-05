@@ -42,6 +42,9 @@ if ($help) {
     print "- Fixes screen permissions\n";
     print "- Runs cpkeyclt\n";
     print "- Creates test accounts\n";
+    print "- Disables cphulkd\n";
+    print "- Creates access hash\n";
+    print "- Updates motd\n";
     print "- Runs upcp (optional)\n";
     print "- Runs check_cpanel_rpms --fix (optional)\n";
     print "- Installs Task::Cpanel::Core (optional)\n\n";
