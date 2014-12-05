@@ -144,10 +144,6 @@ sysopen (my $etc_hosts, '/etc/hosts', O_WRONLY|O_CREAT) or
                      "$ip		daily daily.cpanel.vm\n";
 close ($etc_hosts);
 
-# update cplicense
-print "updating cpanel license\n";
-system_formatted ('/usr/local/cpanel/cpkeyclt');
-
 # fix screen perms
 print "fixing screen perms\n";
 system_formatted ('rpm --setperms screen');
@@ -159,7 +155,7 @@ system_formatted ('/usr/local/cpanel/bin/realmkaccesshash');
 
 # create test account
 print "creating test account - cptest\n";
-system_formatted ('yes |/scripts/wwwacct cptest.tld cptest cpanel1 1000 x3 n y 10 10 10 0 0 0 0 n');
+system_formatted ('yes |/scripts/wwwacct cptest.tld cptest cpanel1 1000 x3 n y 10 10 10 10 10 10 10 n');
 print "creating test email - testing\@cptest.tld\n";
 system_formatted ('/scripts/addpop testing@cptest.tld cpanel1');
 print "creating test database - cptest_testdb\n";
@@ -211,6 +207,10 @@ sysopen (my $etc_motd, '/etc/motd', O_WRONLY|O_CREAT) or
                      "https://IPADDR:2083/login/?user=cptest&pass=cpanel1\n" .
                      "https://IPADDR:2096/login/?user=testing\@cptest.tld&pass=cpanel1\n\n"; 
 close ($etc_motd);
+
+# update cplicense
+print "updating cpanel license\n";
+system_formatted ('/usr/local/cpanel/cpkeyclt');
 
 # exit cleanly
 print "setup complete\n\n";
