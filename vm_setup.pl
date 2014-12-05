@@ -88,6 +88,17 @@ sysopen (my $etc_hostname, '/etc/hostname', O_WRONLY|O_CREAT) or
     print $etc_hostname "daily.cpanel.vm";
 close ($etc_hostname);
 
+# set /etc/sysconfig/network
+
+print "updating /etc/sysconfig/network\n";
+unlink '/etc/sysconfig/network';
+sysopen (my $etc_network, '/etc/sysconfig/network', O_WRONLY|O_CREAT) or
+    die print_formatted ("$!");
+    print $etc_network "NETWORKING=yes\n" .
+                     "NOZEROCONF=yes\n" .
+                     "HOSTNAME=daily.cpanel.vm\n";
+close ($etc_network);
+
 # add resolvers
 print "adding resolvers\n";
 unlink '/etc/resolv.conf';
