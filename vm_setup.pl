@@ -152,9 +152,14 @@ system_formatted ('/usr/local/cpanel/cpkeyclt');
 print "fixing screen perms\n";
 system_formatted ('rpm --setperms screen');
 
+# make accesshash
+print "making access hash\n";
+$ENV{'REMOTE_USER'} = 'root';
+system_formatted ('/usr/local/cpanel/bin/realmkaccesshash');
+
 # create test account
 print "creating test account - cptest\n";
-system_formatted ('yes|/scripts/wwwacct cptest.tld cptest cpanel1');
+system_formatted ('yes |/scripts/wwwacct cptest.tld cptest cpanel1 1000 x3 n y 10 10 10 0 0 0 0 n');
 print "creating test email - testing\@cptest.tld\n";
 system_formatted ('/scripts/addpop testing@cptest.tld cpanel1');
 print "creating test database - cptest_testdb\n";
