@@ -89,7 +89,6 @@ sysopen (my $etc_hostname, '/etc/hostname', O_WRONLY|O_CREAT) or
 close ($etc_hostname);
 
 # set /etc/sysconfig/network
-
 print "updating /etc/sysconfig/network\n";
 unlink '/etc/sysconfig/network';
 sysopen (my $etc_network, '/etc/sysconfig/network', O_WRONLY|O_CREAT) or
@@ -218,6 +217,11 @@ sysopen (my $etc_motd, '/etc/motd', O_WRONLY|O_CREAT) or
                      "https://IPADDR:2083/login/?user=cptest&pass=cpanel1\n" .
                      "https://IPADDR:2096/login/?user=testing\@cptest.tld&pass=cpanel1\n\n"; 
 close ($etc_motd);
+
+# disables cphulkd
+print "disables cphulkd\n";
+system_formatted ('/usr/local/cpanel/etc/init/stopcphulkd');
+system_formatted ('/usr/local/cpanel/bin/cphulk_pam_ctl --disable');
 
 # update cplicense
 print "updating cpanel license\n";
