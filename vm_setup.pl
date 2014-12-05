@@ -202,9 +202,9 @@ unlink '/etc/motd';
 sysopen (my $etc_motd, '/etc/motd', O_WRONLY|O_CREAT) or
     die print_formatted ("$!");
     print $etc_motd "\nVM Setup Script created the following test accounts:\n" .
-                     "https://$ip:2087/login/?user=root&pass=cpanel1\n" .
-                     "https://$ip:2083/login/?user=cptest&pass=cpanel1\n" .
-                     "https://$ip:2096/login/?user=testing\@cptest.tld&pass=cpanel1\n\n"; 
+                     "https://IPADDR:2087/login/?user=root&pass=cpanel1\n" .
+                     "https://IPADDR:2083/login/?user=cptest&pass=cpanel1\n" .
+                     "https://IPADDR:2096/login/?user=testing\@cptest.tld&pass=cpanel1\n\n"; 
 close ($etc_motd);
 
 # exit cleanly
